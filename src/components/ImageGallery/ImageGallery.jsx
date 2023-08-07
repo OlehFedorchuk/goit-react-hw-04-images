@@ -12,21 +12,12 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
   const [totalImages, setTotalImages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    fetchImages();
-    addScrollListener();
-
-    return () => removeScrollListener();
-  }, [query]);
-
-
-
   const addScrollListener = () => {
-    window.addEventListener('load', handleScroll);
+    window.addEventListener('scroll', handleScroll);
   };
 
   const removeScrollListener = () => {
-    window.removeEventListener('load', handleScroll);
+    window.removeEventListener('scroll', handleScroll);
   };
 
   const handleScroll = () => {
@@ -66,6 +57,15 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
       });
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+    setImages([]); 
+    fetchImages();
+    addScrollListener();
+
+    return () => removeScrollListener();
+  }, [query]); 
+
   return (
     <div>
       <ul className="ImageGallery">
@@ -89,6 +89,3 @@ ImageGallery.propTypes = {
 };
 
 export default ImageGallery;
-
-
-
