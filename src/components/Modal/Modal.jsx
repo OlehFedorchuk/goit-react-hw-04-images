@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 const Modal = ({ imageUrl, onCloseModal }) => {
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
-
-  const handleKeyPress = event => {
+  const handleKeyPress = useCallback(event => {
     if (event.code === 'Escape') {
       onCloseModal();
     }
-  };
+  }, [onCloseModal]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   const handleClick = event => {
     if (event.target === event.currentTarget) {

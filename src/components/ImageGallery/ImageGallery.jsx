@@ -13,11 +13,11 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const addScrollListener = () => {
-    window.addEventListener('click', handleScroll);
+    window.addEventListener('scroll', handleScroll);
   };
 
   const removeScrollListener = () => {
-    window.removeEventListener('click', handleScroll);
+    window.removeEventListener('scroll', handleScroll);
   };
 
   const handleScroll = () => {
@@ -57,15 +57,14 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
       });
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+    setImages([]);
+    fetchImages();
+    addScrollListener();
 
-useEffect(() => {
-  setCurrentPage(1);
-  setImages([]);
-  fetchImages();
-  addScrollListener();
-
-  return () => removeScrollListener();
-}, [query]);
+    return () => removeScrollListener();
+  }, [query, isLoading, images.length, totalImages, currentPage]); // Додавання залежностей у useEffect
 
   return (
     <div>
