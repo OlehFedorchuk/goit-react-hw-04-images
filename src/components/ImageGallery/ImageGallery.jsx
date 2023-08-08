@@ -207,7 +207,7 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
 
     addScrollListener();
     return () => removeScrollListener();
-  }, [currentPage, isLoading, images.length, totalImages, query, perPage]);
+  }, [currentPage, isLoading, images.length, totalImages, query, perPage, fetchImages, handleScroll,]);
 
   return (
     <div>
