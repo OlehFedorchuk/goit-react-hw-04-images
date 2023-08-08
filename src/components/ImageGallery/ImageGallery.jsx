@@ -51,11 +51,11 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
 
   useEffect(() => {
     const addScrollListener = () => {
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('click', handleScroll);
     };
 
     const removeScrollListener = () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('click', handleScroll);
     };
 
     addScrollListener();
