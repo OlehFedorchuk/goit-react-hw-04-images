@@ -32,6 +32,7 @@ const App = () => {
           query={searchQuery}
           perPage={perPage}
           onOpenModal={handleOpenModal}
+        
         />
       )}
       {showModal && <Modal imageUrl={modalImageUrl} onCloseModal={handleCloseModal} />}
