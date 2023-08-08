@@ -11,60 +11,112 @@ const ImageGallery = ({ query, page, perPage, onOpenModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [totalImages, setTotalImages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const addScrollListener = () => {
-    window.addEventListener('scroll', handleScroll);
-  };
-
-  const removeScrollListener = () => {
-    window.removeEventListener('scroll', handleScroll);
-  };
-
-  const handleScroll = () => {
-    if (!isLoading && images.length < totalImages) {
-      const { innerHeight } = window;
-      const { scrollHeight, scrollTop } = document.documentElement;
-      const scrolledToBottom = innerHeight + scrollTop >= scrollHeight;
-
-      if (scrolledToBottom) {
-        fetchImages();
-      }
-    }
-  };
-
-  const fetchImages = () => {
-    const apiKey = '37446225-ced4f53dd81a7d760f8a029fd';
-    const url = `https://pixabay.com/api/?q=${query}&page=${currentPage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
-
-    setIsLoading(true);
-
-    axios
-      .get(url)
-      .then(response => {
-        const newImages = response.data.hits.map(image => ({
-          ...image,
-          id: nanoid(),
-        }));
-
-        setImages(prevImages => [...prevImages, ...newImages]);
-        setIsLoading(false);
-        setTotalImages(response.data.total);
-        setCurrentPage(prevPage => prevPage + 1);
-      })
-      .catch(error => {
-        console.error('Error fetching images:', error);
-        setIsLoading(false);
-      });
-  };
-
   useEffect(() => {
+    const addScrollListener = () => {
+      window.addEventListener('click', handleScroll);
+    };
+  
+    const removeScrollListener = () => {
+      window.removeEventListener('click', handleScroll);
+    };
+  
+    const handleScroll = () => {
+      if (!isLoading && images.length < totalImages) {
+        const { innerHeight } = window;
+        const { scrollHeight, scrollTop } = document.documentElement;
+        const scrolledToBottom = innerHeight + scrollTop >= scrollHeight;
+  
+        if (scrolledToBottom) {
+          fetchImages();
+        }
+      }
+    };
+  
+    const fetchImages = () => {
+      const apiKey = '37446225-ced4f53dd81a7d760f8a029fd';
+      const url = `https://pixabay.com/api/?q=${query}&page=${currentPage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
+  
+      setIsLoading(true);
+  
+      axios
+        .get(url)
+        .then(response => {
+          const newImages = response.data.hits.map(image => ({
+            ...image,
+            id: nanoid(),
+          }));
+  
+          setImages(prevImages => [...prevImages, ...newImages]);
+          setIsLoading(false);
+          setTotalImages(response.data.total);
+          setCurrentPage(prevPage => prevPage + 1);
+        })
+        .catch(error => {
+          console.error('Error fetching images:', error);
+          setIsLoading(false);
+        });
+    };
+  
     setCurrentPage(1);
     setImages([]);
     fetchImages();
     addScrollListener();
-
+  
     return () => removeScrollListener();
-  }, [query, isLoading, images.length, totalImages, currentPage]); // Додавання залежностей у useEffect
+  }, [query, currentPage, isLoading, images.length, totalImages, perPage]);
+  // const addScrollListener = () => {
+  //   window.addEventListener('scroll', handleScroll);
+  // };
+
+  // const removeScrollListener = () => {
+  //   window.removeEventListener('scroll', handleScroll);
+  // };
+
+  // const handleScroll = () => {
+  //   if (!isLoading && images.length < totalImages) {
+  //     const { innerHeight } = window;
+  //     const { scrollHeight, scrollTop } = document.documentElement;
+  //     const scrolledToBottom = innerHeight + scrollTop >= scrollHeight;
+
+  //     if (scrolledToBottom) {
+  //       fetchImages();
+  //     }
+  //   }
+  // };
+
+  // const fetchImages = () => {
+  //   const apiKey = '37446225-ced4f53dd81a7d760f8a029fd';
+  //   const url = `https://pixabay.com/api/?q=${query}&page=${currentPage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
+
+  //   setIsLoading(true);
+
+  //   axios
+  //     .get(url)
+  //     .then(response => {
+  //       const newImages = response.data.hits.map(image => ({
+  //         ...image,
+  //         id: nanoid(),
+  //       }));
+
+  //       setImages(prevImages => [...prevImages, ...newImages]);
+  //       setIsLoading(false);
+  //       setTotalImages(response.data.total);
+  //       setCurrentPage(prevPage => prevPage + 1);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching images:', error);
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  //   setImages([]);
+  //   fetchImages();
+  //   addScrollListener();
+
+  //   return () => removeScrollListener();
+  // }, [query, isLoading, images.length, totalImages, currentPage]); // Додавання залежностей у useEffect
 
   return (
     <div>
@@ -89,3 +141,4 @@ ImageGallery.propTypes = {
 };
 
 export default ImageGallery;
+// 
